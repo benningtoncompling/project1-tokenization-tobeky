@@ -11,13 +11,17 @@ with open(file_name, 'r') as open_book:
         text = open_book.read()
         text = re.sub(r'<[^(><)]+>', r'', text)
         text = re.sub(r'\[|]|"|\*|=|{|}|-|&|;|/|\||:|_|\(|\)|\+|!', r'', text)
-        wordList = re.findall(r'\b[a-zA-Z]+', text)
-        wordList.sort()
-        frequency = []
-        for w in wordList:
-            frequency.append(wordList.count(w))
-        print(str(zip(wordList, frequency)))
-        open_out_book.write(text)
+        text = text.split(" ")
+        wordList = {}
+
+        for word in text:
+            if word not in wordList:
+                wordList[word] = 1
+            elif word in wordList:
+                wordList[word] = wordList[word] + 1
+
+        for word in wordList:
+            open_out_book.write(str(word) + "\t" + str(wordList[word]) + "\n")
 
 # Sources:
 # https://www.itworld.com/article/2784456/using-regular-expressions-to-identify-xml-tags.html
